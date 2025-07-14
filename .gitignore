@@ -1,4 +1,13 @@
 .ignoreme
 .vscode
+
+playwright-auth
+.auth
+playwright/.auth
+
+.env
+.env*
+
 node_modules
 test-results
+playwright-report

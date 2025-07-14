@@ -6,7 +6,9 @@
     "test:update": "playwright test --update-snapshots"
   },
   "devDependencies": {
-    "@playwright/test": "latest",
-    "playwright": "latest"
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.54.1",
+    "@types/node": "^24.0.13",
+    "playwright": "^1.54.1"
   }
 }
