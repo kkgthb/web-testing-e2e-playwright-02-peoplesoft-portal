@@ -1,0 +1,4 @@
+.ignoreme
+.vscode
+node_modules
+test-results
