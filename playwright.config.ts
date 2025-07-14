@@ -19,9 +19,9 @@ export default defineConfig({
   ],
   use: {
     baseURL: process.env.PS_PORTAL_BASE_URL,
-    trace: "on-first-retry",
-    video: "off",
-    screenshot: "off",
+    trace: "off", // WITH SUCH A SENSITIVE WEB APPLICATION, PROBABLY BEST TO LEAVE ALL RECORDING OFF BY DEFAULT.
+    video: "off", // WITH SUCH A SENSITIVE WEB APPLICATION, PROBABLY BEST TO LEAVE ALL RECORDING OFF BY DEFAULT.
+    screenshot: "off", // WITH SUCH A SENSITIVE WEB APPLICATION, PROBABLY BEST TO LEAVE ALL RECORDING OFF BY DEFAULT.
   },
   projects: [
     {
@@ -36,21 +36,21 @@ export default defineConfig({
       },
       dependencies: ['setup'],
     },
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //     storageState: 'playwright-auth/.auth/user.json',
-    //   },
-    //   dependencies: ['setup'],
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 13'],
-    //     storageState: 'playwright-auth/.auth/user.json',
-    //   },
-    //   dependencies: ['setup'],
-    // },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+        storageState: 'playwright-auth/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 13'],
+        storageState: 'playwright-auth/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
   ],
 });

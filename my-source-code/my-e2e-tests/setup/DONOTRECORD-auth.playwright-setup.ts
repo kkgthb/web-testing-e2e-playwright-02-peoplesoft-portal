@@ -4,6 +4,13 @@ import fs from 'fs';
 
 const authFile = path.join(__dirname, '../../../playwright-auth/.auth/user.json');
 
+// STRONGLY SUGGESTED:  disable all screen-recording during setup execution
+setup.use({
+    trace: "off",
+    video: "off",
+    screenshot: "off",
+});
+
 setup('authenticate', async () => {
 
     if (!!fs.existsSync(authFile)) {

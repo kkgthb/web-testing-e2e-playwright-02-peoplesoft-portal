@@ -11,6 +11,14 @@ const standalone_page_url = `${process.env.PS_PORTAL_WEB_BASE_PATH}/c/${role_nam
 const expected_page_title = 'Gender Identity';
 const expected_grid_title = 'Gender Details';
 
+// IMPORTANT:  flip these to "off" instead of "on" if your test login's gender identity is not safe to record!
+test.use({
+    trace: "on",
+    video: "on",
+    screenshot: "on",
+});
+// IMPORTANT:  flip these to "off" instead of "on" if your test login's gender identity is not safe to record!
+
 test.describe(`Standalone ${page_definition_name}`, async () => {
 
     test(`Page: noninteractive HTML validation`, async ({ page }) => {
@@ -36,7 +44,7 @@ test.describe(`Standalone ${page_definition_name}`, async () => {
         });
 
         // Validation
-        await test.step('should have a gender details data table', async () => {
+        await test.step(`should have a "${expected_grid_title}" data table`, async () => {
 
             let grid_box: Locator;
 
@@ -61,7 +69,7 @@ test.describe(`Standalone ${page_definition_name}`, async () => {
             });
 
             // Validation
-            await test.step('should contain at least 1 gender detail', async () => {
+            await test.step('should contain at least 1 row', async () => {
                 const rows = await getGridBodyRowPlaywrightLocator(grid_body_table);
                 const rowcount = await rows.count();
                 await expect(await rowcount).toBeGreaterThan(0);
@@ -69,8 +77,8 @@ test.describe(`Standalone ${page_definition_name}`, async () => {
         });
 
         // Validation
-        await test.step('should not currently show the "Gender Details" modal', async () => {
-            const modal_form = await page.getByRole('dialog', { name: 'Gender Details' })
+        await test.step(`should not currently show the "${expected_grid_title}" modal`, async () => {
+            const modal_form = await page.getByRole('dialog', { name: expected_grid_title })
             await expect(modal_form).toBeHidden();
         });
 
@@ -98,13 +106,17 @@ test.describe(`Standalone ${page_definition_name}`, async () => {
             });
 
             // Action
-            await test.step('activate row-1 gender-edit modal', async () => {
-                await (await getGridBodyRowPlaywrightLocator(page)).first().click();
+            await test.step('activate row-1 edit modal', async () => {
+                // Flaky -- sometimes the modal never actually becomes visible, despite the "waitFor."
+                // await (await getGridBodyRowPlaywrightLocator(page)).first().click();
+                // Nope -- `.press('Enter') is no less flaky than `.click()`.
+                // It's also inconsistent which browser or screen size it flakes out in.
+                await (await getGridBodyRowPlaywrightLocator(page)).first().press('Enter');
             });
 
             // Action
             await test.step('wait for modal load', async () => {
-                page.getByRole('dialog', { name: expected_grid_title }).waitFor();
+                page.getByRole('dialog', { name: expected_grid_title }).waitFor({ state: 'visible' });
             });
         });
 
@@ -112,8 +124,7 @@ test.describe(`Standalone ${page_definition_name}`, async () => {
 
         // Validation
         await test.step('modal exists', async () => {
-            // Default timeout is 5 seconds.  Modal can take a while to load, so we'll bump it up to 20, to be safe.
-            await expect(modal_form).toBeVisible({ timeout: 20000 });
+            await expect(modal_form).toBeVisible();
         });
 
         const modal_iframe: FrameLocator = await modal_form.frameLocator('iframe');
