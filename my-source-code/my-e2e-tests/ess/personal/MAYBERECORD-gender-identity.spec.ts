@@ -21,6 +21,9 @@ test.use({
 
 test.describe(`Standalone ${page_definition_name}`, async () => {
 
+    // Hopefully, retries will help a bit with the flakiness of the modal test.
+    test.describe.configure({ retries: 5 });
+
     test(`Page: noninteractive HTML validation`, async ({ page }) => {
 
         // Action
@@ -102,6 +105,11 @@ test.describe(`Standalone ${page_definition_name}`, async () => {
 
             // Action
             await test.step('wait for page load', async () => {
+                // Note per finally getting a good trace recording:
+                // If there's a DIV (of ARIA role "LayoutTableCell") whose ID field is "PTBADPAGE_", 
+                // within this Form, 
+                // then the server returned an error and we need to start over somehow.
+                // I wonder if this would be less flaky if they weren't sharing a "describe" or weren't sharing a file or something.
                 page.getByRole('form').and(page.locator('.PSForm')).waitFor();
             });
 

@@ -13,8 +13,12 @@ export default defineConfig({
       { open: 'never' },
     ],
     [
+      'json',
+      { outputFile: 'test-results/json.json' },
+    ],
+    [
       'junit',
-      { outputFile: 'test-results/junit.xml' }
+      { outputFile: 'test-results/junit.xml' },
     ],
   ],
   use: {
