@@ -13,7 +13,7 @@ const expected_grid_title = 'Gender Details';
 
 // IMPORTANT:  flip these to "off" instead of "on" if your test login's gender identity is not safe to record!
 test.use({
-    trace: "on",
+    trace: "off", // TODO:  Yikes.  Traces capture the login cookie for posterity.  That's not good.
     video: "on",
     screenshot: "on",
 });
